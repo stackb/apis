@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package build.stack.bzl.v1beta1;
+
+import "google/protobuf/timestamp.proto";
+
+// The Application service provides metadata about the bzl application as well
+// the capability to shutdown/restart it (if allowed)
+service Application {
+    rpc GetMetadata(GetMetadataRequest) returns (ApplicationMetadata) {}
+    rpc Shutdown(ShutdownRequest) returns (ShutdownResponse) {}
+}
+
+// ApplicationMetadata is produced by the GetMetadata rpc and provides details
+// about the backand application
+message ApplicationMetadata {
+    // The name of the application
+    string name = 1;
+  
+    // The release version
+    string version = 2;
+  
+    // The release commit
+    string commit_id = 3;
+  
+    // The release date
+    google.protobuf.Timestamp build_date = 4;
+}
+  
+// GetMetadataRequest is consumed by the GetMetadata rpc.
+message GetMetadataRequest {}
+
+// ShutdownRequest is consumed by the Shutdown rpc.
+message ShutdownRequest { 
+    // The restart flag should be set to true if an application restart is
+    // desired.
+    bool restart = 1; 
+}
+
+// ShutdownRequest is produced by the Shutdown rpc.
+message ShutdownResponse {}
+
