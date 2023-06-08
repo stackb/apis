@@ -1,0 +1,15 @@
+load("@build_stack_rules_proto//rules:proto_descriptor_set.bzl", "rules_proto_descriptor_set")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "build_stack_bzl_v1beta1_proto",
+    srcs = ["application.proto"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:timestamp_proto"],
+)
+
+rules_proto_descriptor_set(
+    name = "build_stack_bzl_v1beta1_descriptor",
+    visibility = ["//visibility:public"],
+    deps = ["build_stack_bzl_v1beta1_proto"],
+)
