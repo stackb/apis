@@ -1,4 +1,9 @@
 plugins:
+  - name: cpp
+    implementation: builtin:cpp
+    deps:
+      - "@org_golang_google_protobuf//reflect/protoreflect"
+      - "@org_golang_google_protobuf//runtime/protoimpl"
   - name: protoc-gen-go
     implementation: golang:protobuf:protoc-gen-go
     deps:
@@ -14,16 +19,16 @@ rules:
   - name: proto_compile
     implementation: stackb:rules_proto:proto_compile
     visibility:
-      -  //visibility:public
+      - //visibility:public
   - name: proto_descriptor_set
     implementation: stackb:rules_proto:proto_descriptor_set
     visibility:
-      -  //visibility:public
+      - //visibility:public
   - name: proto_go_library
     enabled: true
     implementation: stackb:rules_proto:proto_go_library
     visibility:
-      -  //visibility:public
+      - //visibility:public
     resolves:
       - "google/protobuf/([a-z]+).proto @org_golang_google_protobuf//types/known/${1}pb"
       - "google/protobuf/(field_mask).proto @org_golang_google_protobuf//types/known/fieldmaskpb"
@@ -31,7 +36,7 @@ rules:
 languages:
   - name: descriptor
     plugins:
-      - protoc-gen-go
+      - cpp
     rules:
       - proto_descriptor_set
     enabled: false

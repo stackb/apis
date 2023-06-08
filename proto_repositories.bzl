@@ -6,6 +6,8 @@ def proto_repositories():
         name = "googleapis",
         build_directives = [
             "gazelle:exclude google/example/endpointsapis/v1",
+            "gazelle:exclude google/ads/googleads",
+            "gazelle:exclude google/appengine/logging",
             "gazelle:exclude google/cloud/recommendationengine/v1beta1",  # is this a bug?
             "gazelle:proto_language descriptor enable true",
         ],

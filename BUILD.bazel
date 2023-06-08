@@ -25,7 +25,7 @@ proto_gazelle(
     cfgs = ["//:rules_proto_config.yaml"],
     command = "update",
     gazelle = ":gazelle-protobuf",
-    imports = ["@protoapis//:import.csv"],
+    imports = ["@protoapis//:imports.csv"],
 )
 
 gazelle(
