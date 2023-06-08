@@ -20,8 +20,8 @@ import "google/protobuf/compiler/plugin.proto";
 
 // PluginService is a remote code generation API.
 service PluginService {
-  // Generate services one code generation request.
-  rpc Generate(google.protobuf.compiler.CodeGeneratorRequest) returns (google.protobuf.compiler.CodeGeneratorResponse) {
+  // GenerateCode services one code generation request.
+  rpc GenerateCode(google.protobuf.compiler.CodeGeneratorRequest) returns (google.protobuf.compiler.CodeGeneratorResponse) {
     option idempotency_level = IDEMPOTENT;
   }
 }
