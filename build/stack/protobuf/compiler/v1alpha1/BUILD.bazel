@@ -1,5 +1,7 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
+# gazelle:proto_language descriptor enabled true
+
 proto_library(
     name = "stack_build_protobuf_compiler_v1alpha1_proto",
     srcs = ["service.proto"],
