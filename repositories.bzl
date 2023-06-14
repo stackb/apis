@@ -78,20 +78,23 @@ def rules_proto():
 
 def build_stack_rules_proto():
     # Branch: master
-    # Commit: aa380e4421057b35228544bc234f816bb6b72c1c
-    # Date: 2022-12-08 05:19:32 +0000 UTC
-    # URL: https://github.com/stackb/rules_proto/commit/aa380e4421057b35228544bc234f816bb6b72c1c
+    # Commit: 3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6
+    # Date: 2023-06-12 18:24:59 +0000 UTC
+    # URL: https://github.com/stackb/rules_proto/commit/3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6
     #
-    # use distinct impLang for scala proto exports (#304)
+    # Fix proto_repository for @googleapis (#324)
     #
-    # * use distinct impLang for scala proto exports
-    # * fix test
-    # Size: 2074364 (2.1 MB)
-    http_archive(
+    # * Include vendor tree in proto_repository_tools_srcs
+    # * Rename -override_go_googleapis to -reresolve_known_proto_imports
+    # * Add googleapis to CI build
+    # * Fix TestOverrideRule
+    # Size: 2090870 (2.1 MB)
+    _maybe(
+        http_archive,
         name = "build_stack_rules_proto",
-        sha256 = "820dc71f2e265a50104671d323caba53790dfe20e9f7249a0e6beeaee39b4597",
-        strip_prefix = "rules_proto-aa380e4421057b35228544bc234f816bb6b72c1c",
-        urls = ["https://github.com/stackb/rules_proto/archive/aa380e4421057b35228544bc234f816bb6b72c1c.tar.gz"],
+        sha256 = "92b02fc3040e4fbeba22843aa9b46eeb24b63c05c533bdc13e9afcaedd5a3d4f",
+        strip_prefix = "rules_proto-3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6",
+        urls = ["https://github.com/stackb/rules_proto/archive/3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6.tar.gz"],
     )
 
 def bazel_skylib():

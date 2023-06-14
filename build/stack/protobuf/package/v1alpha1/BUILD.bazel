@@ -1,0 +1,19 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@build_stack_rules_proto//rules:proto_descriptor_set.bzl", "rules_proto_descriptor_set")
+
+proto_library(
+    name = "build_stack_protobuf_package_v1alpha1_proto",
+    srcs = ["package.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@googleapis//google/longrunning:operations_proto",
+        "@protoapis//google/protobuf:descriptor_proto",
+        "@protoapis//google/protobuf:timestamp_proto",
+    ],
+)
+
+rules_proto_descriptor_set(
+    name = "build_stack_protobuf_package_v1alpha1_descriptor",
+    visibility = ["//visibility:public"],
+    deps = ["build_stack_protobuf_package_v1alpha1_proto"],
+)
