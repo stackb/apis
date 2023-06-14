@@ -17,12 +17,16 @@ syntax = "proto3";
 
 package build.stack.starlark.info.v1beta1;
 
-message ApiInfo {
+// GlobalInfo describes a set of starlark symbols that are available at the top-level.
+message GlobalInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
-    repeated ValueInfo global = 2;
+    // values names the symbols available in the global scope.
+    repeated ValueInfo values = 2;
 }
 
 message ValueInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     StringInfo string = 2;
     TypeInfo type = 3;
@@ -44,30 +48,37 @@ message ValueInfo {
 }
 
 message StringInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message TypeInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message TruthInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message HashableInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message ComparableInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message TotallyOrderedInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message CallableInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     repeated PositionalArgInfo positional_arg = 2;
     repeated KeywordArgInfo keyword_arg = 3;
@@ -75,60 +86,79 @@ message CallableInfo {
 }
 
 message IterableInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string type = 2;
 }
 
 message SequenceInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string type = 2;
 }
 
 message IndexableInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string type = 2;
 }
 
 message SliceableInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string type = 2;
 }
 
 message HasSetIndexInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string type = 2;
 }
 
 message MappingInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     repeated MemberInfo member = 3;
 }
 
 message MemberInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string key_type = 2;
+    string value_type = 3;
+}
+
+message HasSetKeyInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string key_type = 2;
     string value_type = 3;
 }
 
 message HasBinaryInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message HasUnaryInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message HasSetFieldInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
 }
 
 message PositionalArgInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     int32 position = 2;
     string type = 3;
 }
 
 message KeywordArgInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string name = 2;
     string type = 3;
@@ -137,6 +167,7 @@ message KeywordArgInfo {
 }
 
 message ReturnValueInfo {
+    // Markdown-compatible documentation string.
     string doc = 1;
     string type = 2;
 }
