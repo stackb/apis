@@ -41,17 +41,18 @@ message Release {
     string ref_type = 7;
     // commit is the git commit sha (e.g. GITHUB_SHA).
     string commit = 8;
-    // id is a unique identifier for the release.  This is assigned by the server.
-    string id = 10;
 }
 
+// File
 message FileDescriptorAsset {
     // The compiled file.
     google.protobuf.FileDescriptorProto file = 1;
     // Hash of the FileDescriptorProto data.
     string sha256 = 2;
-    // URL where the asset is stored.  Optional.
-    string url = 3;
+    // size in bytes of the asset
+    uint64 size = 3;
+    // URL where the asset is stored.  May not always be populated.
+    string url = 4;
 }
 
 // Package represents a set of compiled proto files for a given state of files
@@ -69,13 +70,6 @@ message Package {
     google.protobuf.Timestamp created_at = 5;
 }
 
-message FileDescriptorPackage {
-    // The package release
-    Release release = 1;
-    // files is the list of descriptors in this package.
-    repeated google.protobuf.FileDescriptorProto files = 2;
-}
-
 message FileDescriptorAssetSet {
     // The release.
     Release release = 1;
@@ -84,10 +78,11 @@ message FileDescriptorAssetSet {
 }
 
 message GetPackageRequest {
-
+    // the package operations ID
+    string id = 1;
 }
 
-// Packages services CRUD operations on packages.
+// Packages performs CRUD operations on packages.
 service Packages {
     // CreatePackage assembles a stream of packages.  The first request must
     // include the release object, afterwards it does not need to be sent and
@@ -98,13 +93,9 @@ service Packages {
         option idempotency_level = IDEMPOTENT;
     }
 
-    // GetPackage returns a stream of packages.  The first response will include
-    // the release object, afterwards it need not be sent. When the stream
-    // completes, a Package object is returned.  If the size of the package is
-    // too large, the files may not be returned.
-    rpc GetPackage(Release) returns (Package) {
+    // GetPackage returns a package identified by the longrunning operations ID.
+    rpc GetPackage(GetPackageRequest) returns (Package) {
         option idempotency_level = NO_SIDE_EFFECTS;
     }
-  
-  }
-  
+
+}
