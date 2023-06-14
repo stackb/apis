@@ -1,0 +1,173 @@
+// Copyright 2023 Stack.Build LLC. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// starlark_info collects information about starlark symbols.
+syntax = "proto3";
+
+package build.stack.starlark.info.v1beta1;
+
+// GlobalInfo describes a set of starlark symbols that are available at the top-level.
+message GlobalInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    // values names the symbols available in the global scope.
+    repeated ValueInfo values = 2;
+}
+
+message ValueInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    StringInfo string = 2;
+    TypeInfo type = 3;
+    TruthInfo truth = 4;
+    HashableInfo hash = 5;
+    ComparableInfo compare = 6;
+    TotallyOrderedInfo totally_ordered = 7;
+    CallableInfo callable = 8;
+    IterableInfo iterable = 9;
+    SequenceInfo sequence = 10;
+    IndexableInfo index = 12;
+    SliceableInfo slice = 13;
+    HasSetIndexInfo set_index = 14;
+    MappingInfo mapping = 15;
+    HasSetKeyInfo set_key = 16;
+    HasBinaryInfo binary = 17;
+    HasUnaryInfo unary = 18;
+    HasSetFieldInfo set_field = 19;
+}
+
+message StringInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message TypeInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message TruthInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message HashableInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message ComparableInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message TotallyOrderedInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message CallableInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    repeated PositionalArgInfo positional_arg = 2;
+    repeated KeywordArgInfo keyword_arg = 3;
+    ReturnValueInfo return_value = 4;
+}
+
+message IterableInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string type = 2;
+}
+
+message SequenceInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string type = 2;
+}
+
+message IndexableInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string type = 2;
+}
+
+message SliceableInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string type = 2;
+}
+
+message HasSetIndexInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string type = 2;
+}
+
+message MappingInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    repeated MemberInfo member = 3;
+}
+
+message MemberInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string key_type = 2;
+    string value_type = 3;
+}
+
+message HasSetKeyInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string key_type = 2;
+    string value_type = 3;
+}
+
+message HasBinaryInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message HasUnaryInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message HasSetFieldInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+}
+
+message PositionalArgInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    int32 position = 2;
+    string type = 3;
+}
+
+message KeywordArgInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string name = 2;
+    string type = 3;
+    bool mandatory = 4;
+    string default_value = 5;
+}
+
+message ReturnValueInfo {
+    // Markdown-compatible documentation string.
+    string doc = 1;
+    string type = 2;
+}
