@@ -4,6 +4,8 @@ package build.stack.bzl.v1beta1;
 
 import "google/protobuf/timestamp.proto";
 
+option go_package = "github.com/stackb/apis/build/stack/bzl/v1beta1";
+
 // The Application service provides metadata about the bzl application as well
 // the capability to shutdown/restart it (if allowed)
 service Application {

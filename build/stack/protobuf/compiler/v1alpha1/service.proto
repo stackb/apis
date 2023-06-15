@@ -18,6 +18,8 @@ package stack.build.protobuf.compiler.v1alpha1;
 
 import "google/protobuf/compiler/plugin.proto";
 
+option go_package = "github.com/stackb/apis/build/stack/protobuf/compiler/v1alpha1";
+
 // PluginService is a remote code generation API.
 service PluginService {
   // GenerateCode services one code generation request.

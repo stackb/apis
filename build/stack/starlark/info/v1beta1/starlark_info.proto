@@ -17,6 +17,8 @@ syntax = "proto3";
 
 package build.stack.starlark.info.v1beta1;
 
+option go_package = "github.com/stackb/apis/build/stack/starlark/info/v1beta1";
+
 // GlobalInfo describes a set of starlark symbols that are available at the top-level.
 message GlobalInfo {
     // Markdown-compatible documentation string.
