@@ -50,10 +50,6 @@ load("//:proto_repositories.bzl", "proto_repositories")
 
 proto_repositories()
 
-# ----------------------------------------------------
-# @build_stack_rules_proto
-# ----------------------------------------------------
-
 load("@build_stack_rules_proto//:go_deps.bzl", "gazelle_protobuf_extension_go_deps")
 
 gazelle_protobuf_extension_go_deps()

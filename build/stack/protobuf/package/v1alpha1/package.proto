@@ -1,0 +1,101 @@
+// Copyright 2020-2023 Stack.Build LLC.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package build.stack.protobuf.package.v1alpha1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/descriptor.proto";
+import "google/longrunning/operations.proto";
+
+// Release represents a the given state of files
+// under source control, typically a hosted site like github.
+message Release {
+    // server is the platform where the repository is housed, like 'https://github.com' (e.g. $GITHUB_SERVER_URL).
+    string server = 1;
+    // owner is the github owner name (e.g. GITHUB_REPOSITORY_OWNER).
+    string owner = 2;
+    // name is the name of the repository (e.g. ).
+    string name = 3;
+    // repository is the name of the repository (e.g. github.com/protocolbuffers/protobuf')
+    string repository = 4;
+    // prefix is the directory prefix that would be stripped to make paths in
+    // the descriptors relative to (e.g. 'src' for
+    // 'github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto').
+    string prefix = 5;
+    // ref is the git release ref (e.g. GITHUB_REF_NAME).
+    string ref_name = 6;
+    // ref_type is the type of ref (e.g. GITHUB_REF_TYPE).
+    string ref_type = 7;
+    // commit is the git commit sha (e.g. GITHUB_SHA).
+    string commit = 8;
+}
+
+// File
+message FileDescriptorAsset {
+    // The compiled file.
+    google.protobuf.FileDescriptorProto file = 1;
+    // Hash of the FileDescriptorProto data.
+    string sha256 = 2;
+    // size in bytes of the asset
+    uint64 size = 3;
+    // URL where the asset is stored.  May not always be populated.
+    string url = 4;
+}
+
+// Package represents a set of compiled proto files for a given state of files
+// under source control.
+message Package {
+    // The package release
+    Release release = 1;
+    // assets is the set of descriptors in this package.
+    FileDescriptorAsset assets = 2;
+    // sha256 is the sha256 sum of the asset sha256s.
+    string sha256 = 3;
+    // URL for this package
+    string url = 4;
+    // Timestamp for the creation date.
+    google.protobuf.Timestamp created_at = 5;
+}
+
+message FileDescriptorAssetSet {
+    // The release.
+    Release release = 1;
+    // The list of assets in this request.
+    repeated FileDescriptorAsset assets = 2;
+}
+
+message GetPackageRequest {
+    // the package operations ID
+    string id = 1;
+}
+
+// Packages performs CRUD operations on packages.
+service Packages {
+    // CreatePackage assembles a stream of packages.  The first request must
+    // include the release object, afterwards it does not need to be sent and
+    // shoud be ignored.  The assets will be merged in the server. When the
+    // stream completes, a Package object is returned.  If the size of the
+    // package is too large, the assets may not be actually be returned.
+    rpc CreatePackage(stream FileDescriptorAssetSet) returns (google.longrunning.Operation) {
+        option idempotency_level = IDEMPOTENT;
+    }
+
+    // GetPackage returns a package identified by the longrunning operations ID.
+    rpc GetPackage(GetPackageRequest) returns (Package) {
+        option idempotency_level = NO_SIDE_EFFECTS;
+    }
+
+}
