@@ -20,6 +20,8 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/descriptor.proto";
 import "google/longrunning/operations.proto";
 
+option go_package = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha1";
+
 // Release represents a the given state of files
 // under source control, typically a hosted site like github.
 message Release {
