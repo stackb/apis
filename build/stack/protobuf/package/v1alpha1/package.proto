@@ -34,15 +34,20 @@ message ProtoRepository {
     string repository = 4;
 }
 
-// ProtoRelease represents a the given state of files under source control.
-message ProtoRelease {
+// ProtoSourceLocation is a repository directory at a given repository state.
+message ProtoSourceLocation {
+    // The source repository
     ProtoRepository repository = 1;
-    // ref_name is the git release ref (e.g. '23.3'; GITHUB_REF_NAME).
-    string ref_name = 6;
-    // ref_type is the type of ref (e.g. 'tag'; GITHUB_REF_TYPE).
-    string ref_type = 7;
+    // prefix is the directory prefix that would be stripped to make paths in
+    // the descriptors relative to (e.g. 'src' for
+    // 'github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto').
+    string prefix = 2;
     // commit is the git commit sha (e.g. '4dd15db6eb3955745f379d28fb4a2fcfb6753de3'; GITHUB_SHA).
-    string commit = 8;
+    string commit = 3;
+    // ref_name is the optional tag or branch name (GITHUB_REF_TYPE).
+    string ref_name = 5;
+    // ref_type is the optional ref_type (GITHUB_REF_TYPE).
+    string ref_type = 6;
 }
 
 // ProtoAsset represents a compiled FileDescriptorProto and metadata.
@@ -71,12 +76,10 @@ message ProtoCompiler {
 // ProtoPackage represents a set of compiled proto files for a given state of files
 // under source control.
 message ProtoPackage {
-    ProtoRelease release = 1;
+    // root location for the assets
+    ProtoSourceLocation location = 1;
+    // compiler used to create the assets.
     ProtoCompiler compiler = 2;
-    // prefix is the directory prefix that would be stripped to make paths in
-    // the descriptors relative to (e.g. 'src' for
-    // 'github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto').
-    string prefix = 3;
     // assets is the set of descriptors in this package.
     repeated ProtoAsset assets = 4;
     // sha256 is the sha256 sum of the asset sha256s.
@@ -89,15 +92,15 @@ message ProtoPackage {
 
 message CreateProtoPackageRequest {
     // The release info.  For a client streaming call, this only needs to be populated on the first send.
-    ProtoRelease release = 1;
+    ProtoSourceLocation root = 1;
     // The compiler info.  For a client streaming call, this only needs to be populated on the first send.
     ProtoCompiler compiler = 2;
     // prefix is the directory prefix that would be stripped to make paths in
     // the descriptors relative to (e.g. 'src' for
     // 'github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto').
-    string prefix = 5;
+    string prefix = 3;
     // A list of assets.  The client may decide to chunk a large list into multiple calls based on message size.
-    repeated ProtoAsset assets = 3;
+    repeated ProtoAsset assets = 4;
 }
 
 message GetProtoPackageRequest {
