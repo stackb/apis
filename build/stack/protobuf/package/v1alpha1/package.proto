@@ -24,8 +24,8 @@ option go_package = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha
 
 // ProtoRepository represents a place where source files are located.
 message ProtoRepository {
-    // server is the platform where the repository is housed (e.g. 'github.com'; GITHUB_SERVER_URL).
-    string server = 1;
+    // host is the platform where the repository is housed (e.g. 'github.com'; GITHUB_SERVER_URL).
+    string host = 1;
     // owner is the github owner name (e.g. 'protocolbuffers'; GITHUB_REPOSITORY_OWNER).
     string owner = 2;
     // name is the name of the repository (e.g. 'protobuf'; GITHUB_REPOSITORY_NAME).
@@ -54,12 +54,14 @@ message ProtoSourceLocation {
 message ProtoAsset {
     // The compiled file.
     google.protobuf.FileDescriptorProto file = 1;
-    // Hash of the FileDescriptorProto data.
-    string sha256 = 2;
-    // size in bytes of the asset
-    uint64 size = 3;
-    // URL where the asset bytes are stored.
-    string url = 4;
+    // Semantic hash code of the FileDescriptorProto data.
+    string hash = 2;
+    // sha256 hash of the FileDescriptorProto data.
+    string sha256 = 3;
+    // size in bytes of the the FileDescriptorProto data.
+    uint64 size = 4;
+    // bytestream URL where the asset bytes are stored.
+    string bytestream_url = 5;
 }
 
 // ProtoCompiler represents the tool used to generate proto descriptors.
@@ -88,6 +90,8 @@ message ProtoPackage {
     string url = 6;
     // time when the package was created.
     google.protobuf.Timestamp created_at = 7;
+    // name is the unique natural name for the package
+    string name = 8;
 }
 
 message CreateProtoPackageRequest {
