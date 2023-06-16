@@ -60,8 +60,10 @@ message ProtoAsset {
     string sha256 = 3;
     // size in bytes of the the FileDescriptorProto data.
     uint64 size = 4;
-    // bytestream URL where the asset bytes are stored.
-    string bytestream_url = 5;
+    // URL where the asset bytes are stored.
+    string asset_url = 5;
+    // URL where the source file is stored.
+    string source_url = 6;
 }
 
 // ProtoCompiler represents the tool used to generate proto descriptors.
