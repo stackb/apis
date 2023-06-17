@@ -13,10 +13,10 @@ exports_files(["rules_proto_config.yaml"])
 # gazelle:go_generate_proto false
 
 # -- Gazelle language "protobuf" ---
-# gazelle:proto_language descriptor enabled true
+# gazelle:proto_language go enable true
 
 gazelle_binary(
-    name = "gazelle-protobuf",
+    name = "gazelle-custom",
     languages = DEFAULT_LANGUAGES,
 )
 
@@ -24,7 +24,7 @@ proto_gazelle(
     name = "gazelle",
     cfgs = ["//:rules_proto_config.yaml"],
     command = "update",
-    gazelle = ":gazelle-protobuf",
+    gazelle = ":gazelle-custom",
     imports = [
         "@googleapis//:imports.csv",
         "@protoapis//:imports.csv",
