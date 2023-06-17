@@ -1,0 +1,80 @@
+// Copyright 2020-2023 Stack.Build LLC.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package stack.build.protobuf.plugin.v1alpha1;
+
+import "build/stack/protobuf/plugin/v1alpha1/plugin.proto";
+import "build/stack/protobuf/plugin/v1alpha1/import.proto";
+
+// Profile represents the configuration of a set of protoc plugins.
+message Profile {
+    // name identifies this profile.
+    string name = 1;
+    // plugins is a list of Plugin configurations.
+    repeated stack.build.protobuf.plugin.v1alpha1.Plugin plugins = 1;
+    // imports is a list of Import configurations
+    repeated stack.build.protobuf.v1alpha1.Import imports = 1;
+}
+
+message Import {
+    // name is an identifier (e.g. `google/protobuf/any.proto`) or
+    // `github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto` or
+    // `github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/any.proto`
+    // or
+    // `github.com/protocolbuffers/protobuf/blob/a281c139961be79bbc34d5167ed740ba722c8973/src/google/protobuf/any.proto`
+    string name = 1;
+    // source is the source location of the import (e.g. 'github').
+    string source = 2;
+    // repo
+    // owner
+    // commit
+    // path
+}
+
+
+// basically it all boils down to requires and provides.
+
+message ProtoPackage {
+    FileDesciptorSet files = 1;
+    oneof version {
+        GithubRepositoryVersion github_repository_version = 2;
+    }
+}
+
+message GithubRepositoryVersion {
+    string owner = 2;
+    string repo = 3;
+    string commit = 4;
+    string tag = 5;    
+}
+
+message GithubRepositoryVersion {
+    string owner = 2;
+    string repo = 3;
+    string commit = 4;
+    string tag = 5;    
+}
+
+message Package {
+    string authority = 2;
+    string owner = 2;
+    string repo = 3;
+    string commit = 4;
+    string tag = 5;
+
+}
+
+// then, make a database of types such that each entry 

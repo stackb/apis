@@ -1,47 +1,22 @@
-load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
-load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
-load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
-load("@build_stack_rules_proto//rules:proto_descriptor_set.bzl", "rules_proto_descriptor_set")
 load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 
 proto_library(
-    name = "build_stack_bzl_v1beta1_proto",
+    name = "v1beta1_proto",
     srcs = ["application.proto"],
     visibility = ["//visibility:public"],
     deps = ["@protoapis//google/protobuf:timestamp_proto"],
 )
 
-rules_proto_descriptor_set(
-    name = "build_stack_bzl_v1beta1_descriptor",
-    visibility = ["//visibility:public"],
-    deps = ["build_stack_bzl_v1beta1_proto"],
-)
-
-proto_compile(
-    name = "v1beta1_go_compile",
-    output_mappings = [
-        "application.pb.go=github.com/stackb/apis/build/stack/bzl/v1beta1/application.pb.go",
-        "application_grpc.pb.go=github.com/stackb/apis/build/stack/bzl/v1beta1/application_grpc.pb.go",
-    ],
-    outputs = [
-        "application.pb.go",
-        "application_grpc.pb.go",
-    ],
-    plugins = [
-        "@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go",
-        "@build_stack_rules_proto//plugin/grpc/grpc-go:protoc-gen-go-grpc",
-    ],
-    proto = "v1beta1_proto",
-    visibility = ["//visibility:public"],
-)
-
-proto_go_library(
-    name = "v1beta1_go_proto",
+go_library(
+    name = "v1beta",
     srcs = [
         "application.pb.go",
         "application_grpc.pb.go",
     ],
-    importpath = "github.com/stackb/apis/build/stack/bzl/v1beta1",
+    importpath = "github.com/stackb/apis/build/stack/bzl/v1beta",
     visibility = ["//visibility:public"],
     deps = [
         "@org_golang_google_grpc//:go_default_library",
@@ -69,4 +44,22 @@ proto_compiled_sources(
     ],
     proto = "v1beta1_proto",
     visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "v1beta1_go_proto",
+    srcs = [
+        "application.pb.go",
+        "application_grpc.pb.go",
+    ],
+    importpath = "github.com/stackb/apis/build/stack/bzl/v1beta1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
 )

@@ -1,7 +1,7 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 
 proto_library(
     name = "v1alpha1_proto",
@@ -14,8 +14,8 @@ proto_library(
     ],
 )
 
-proto_go_library(
-    name = "v1alpha1_go_proto",
+go_library(
+    name = "v1alpha1",
     srcs = [
         "package.pb.go",
         "package_grpc.pb.go",
@@ -23,6 +23,7 @@ proto_go_library(
     importpath = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha1",
     visibility = ["//visibility:public"],
     deps = [
+        "@com_google_cloud_go_longrunning//autogen/longrunningpb",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",
         "@org_golang_google_grpc//status",
@@ -51,8 +52,8 @@ proto_compiled_sources(
     visibility = ["//visibility:public"],
 )
 
-go_library(
-    name = "v1alpha1",
+proto_go_library(
+    name = "v1alpha1_go_proto",
     srcs = [
         "package.pb.go",
         "package_grpc.pb.go",
@@ -60,10 +61,9 @@ go_library(
     importpath = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha1",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_google_cloud_go_longrunning//autogen/longrunningpb:go_default_library",
         "@org_golang_google_grpc//:go_default_library",
-        "@org_golang_google_grpc//codes:go_default_library",
-        "@org_golang_google_grpc//status:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
         "@org_golang_google_protobuf//reflect/protoreflect",
         "@org_golang_google_protobuf//runtime/protoimpl",
         "@org_golang_google_protobuf//types/descriptorpb",

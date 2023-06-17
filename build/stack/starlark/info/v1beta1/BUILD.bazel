@@ -1,33 +1,18 @@
-load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
-load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
-load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@build_stack_rules_proto//rules:proto_descriptor_set.bzl", "rules_proto_descriptor_set")
-
-# gazelle:proto_language descriptor enabled true
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 
 proto_library(
-    name = "build_stack_starlark_info_v1beta1_proto",
+    name = "v1beta1_proto",
     srcs = ["starlark_info.proto"],
     visibility = ["//visibility:public"],
 )
 
-rules_proto_descriptor_set(
-    name = "build_stack_starlark_info_v1beta1_descriptor",
-    visibility = ["//visibility:public"],
-    deps = ["build_stack_starlark_info_v1beta1_proto"],
-)
-
-rules_proto_descriptor_set(
-    name = "v1beta1_descriptor",
-    visibility = ["//visibility:public"],
-    deps = ["v1beta1_proto"],
-)
-
-proto_compile(
-    name = "v1beta1_go_compile",
+proto_compiled_sources(
+    name = "v1beta1_go_compiled_sources",
+    srcs = ["starlark_info.pb.go"],
     output_mappings = ["starlark_info.pb.go=github.com/stackb/apis/build/stack/starlark/info/v1beta1/starlark_info.pb.go"],
-    outputs = ["starlark_info.pb.go"],
     plugins = ["@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go"],
     proto = "v1beta1_proto",
     visibility = ["//visibility:public"],
@@ -44,11 +29,13 @@ proto_go_library(
     ],
 )
 
-proto_compiled_sources(
-    name = "v1beta1_go_compiled_sources",
+go_library(
+    name = "v1beta1",
     srcs = ["starlark_info.pb.go"],
-    output_mappings = ["starlark_info.pb.go=github.com/stackb/apis/build/stack/starlark/info/v1beta1/starlark_info.pb.go"],
-    plugins = ["@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go"],
-    proto = "v1beta1_proto",
+    importpath = "github.com/stackb/apis/build/stack/starlark/info/v1beta1",
     visibility = ["//visibility:public"],
+    deps = [
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+    ],
 )

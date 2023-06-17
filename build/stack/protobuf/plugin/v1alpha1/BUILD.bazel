@@ -1,0 +1,42 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
+
+proto_library(
+    name = "stack_build_protobuf_plugin_v1alpha1_proto",
+    srcs = [
+        "plugin.proto",
+        "profile.proto",
+    ],
+    visibility = ["//visibility:public"],
+    deps = ["//build/stack/protobuf/plugin/v1alpha1:v1alpha1_proto"],
+)
+
+proto_compiled_sources(
+    name = "stack_build_protobuf_plugin_v1alpha1_go_compiled_sources",
+    srcs = [
+        "plugin.pb.go",
+        "profile.pb.go",
+    ],
+    output_mappings = [
+        "plugin.pb.go=stack/build/protobuf/plugin/v1alpha1/plugin.pb.go",
+        "profile.pb.go=stack/build/protobuf/plugin/v1alpha1/profile.pb.go",
+    ],
+    plugins = ["@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go"],
+    proto = "stack_build_protobuf_plugin_v1alpha1_proto",
+    visibility = ["//visibility:public"],
+)
+
+proto_go_library(
+    name = "stack_build_protobuf_plugin_v1alpha1_go_proto",
+    srcs = [
+        "plugin.pb.go",
+        "profile.pb.go",
+    ],
+    importpath = "github.com/stackb/apis/build/stack/protobuf/plugin/v1alpha1/stack_build_protobuf_plugin_v1alpha1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+    ],
+)
