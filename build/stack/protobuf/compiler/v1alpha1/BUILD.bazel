@@ -1,6 +1,5 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
 load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 
 proto_library(
@@ -30,16 +29,4 @@ proto_compiled_sources(
     plugins = ["@build_stack_rules_proto//plugin/grpc/grpc-go:protoc-gen-go-grpc"],
     proto = "v1alpha1_proto",
     visibility = ["//visibility:public"],
-)
-
-proto_go_library(
-    name = "v1alpha1_go_proto",
-    srcs = ["service_grpc.pb.go"],
-    importpath = "github.com/stackb/apis/build/stack/protobuf/compiler/v1alpha1",
-    visibility = ["//visibility:public"],
-    deps = [
-        "@org_golang_google_grpc//:go_default_library",
-        "@org_golang_google_grpc//codes",
-        "@org_golang_google_grpc//status",
-    ],
 )

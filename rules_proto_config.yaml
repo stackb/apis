@@ -50,5 +50,4 @@ languages:
       - protoc-gen-go-grpc
     rules:
       - proto_compiled_sources
-      - proto_go_library
     enabled: false
