@@ -89,17 +89,17 @@ def build_stack_rules_proto():
     # * Add googleapis to CI build
     # * Fix TestOverrideRule
     # Size: 2090870 (2.1 MB)
-    # _maybe(
-    #     http_archive,
-    #     name = "build_stack_rules_proto",
-    #     sha256 = "92b02fc3040e4fbeba22843aa9b46eeb24b63c05c533bdc13e9afcaedd5a3d4f",
-    #     strip_prefix = "rules_proto-3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6",
-    #     urls = ["https://github.com/stackb/rules_proto/archive/3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6.tar.gz"],
-    # )
-    native.local_repository(
+    _maybe(
+        http_archive,
         name = "build_stack_rules_proto",
-        path = "/Users/pcj/go/src/github.com/stackb/rules_proto",
+        sha256 = "92b02fc3040e4fbeba22843aa9b46eeb24b63c05c533bdc13e9afcaedd5a3d4f",
+        strip_prefix = "rules_proto-3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6",
+        urls = ["https://github.com/stackb/rules_proto/archive/3d7eec0c990f6c4c37967ef4a0d58ba31075d5c6.tar.gz"],
     )
+    # native.local_repository(
+    #     name = "build_stack_rules_proto",
+    #     path = "/Users/pcj/go/src/github.com/stackb/rules_proto",
+    # )
 
 def bazel_skylib():
     _maybe(
