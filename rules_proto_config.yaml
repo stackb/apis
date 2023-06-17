@@ -20,6 +20,10 @@ rules:
     implementation: stackb:rules_proto:proto_compile
     visibility:
       - //visibility:public
+  - name: proto_compiled_sources
+    implementation: stackb:rules_proto:proto_compiled_sources
+    visibility:
+      - //visibility:public
   - name: proto_descriptor_set
     implementation: stackb:rules_proto:proto_descriptor_set
     visibility:
@@ -45,6 +49,6 @@ languages:
       - protoc-gen-go
       - protoc-gen-go-grpc
     rules:
-      - proto_compile
+      - proto_compiled_sources
       - proto_go_library
     enabled: false

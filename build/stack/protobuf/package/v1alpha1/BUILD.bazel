@@ -1,8 +1,10 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@build_stack_rules_proto//rules:proto_descriptor_set.bzl", "rules_proto_descriptor_set")
+load("@build_stack_rules_proto//rules/go:proto_go_library.bzl", "proto_go_library")
 
 proto_library(
-    name = "build_stack_protobuf_package_v1alpha1_proto",
+    name = "v1alpha1_proto",
     srcs = ["package.proto"],
     visibility = ["//visibility:public"],
     deps = [
@@ -12,8 +14,59 @@ proto_library(
     ],
 )
 
-rules_proto_descriptor_set(
-    name = "build_stack_protobuf_package_v1alpha1_descriptor",
+proto_go_library(
+    name = "v1alpha1_go_proto",
+    srcs = [
+        "package.pb.go",
+        "package_grpc.pb.go",
+    ],
+    importpath = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha1",
     visibility = ["//visibility:public"],
-    deps = ["build_stack_protobuf_package_v1alpha1_proto"],
+    deps = [
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+        "@org_golang_google_protobuf//types/descriptorpb",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)
+
+proto_compiled_sources(
+    name = "v1alpha1_go_compiled_sources",
+    srcs = [
+        "package.pb.go",
+        "package_grpc.pb.go",
+    ],
+    output_mappings = [
+        "package.pb.go=github.com/stackb/apis/build/stack/protobuf/package/v1alpha1/package.pb.go",
+        "package_grpc.pb.go=github.com/stackb/apis/build/stack/protobuf/package/v1alpha1/package_grpc.pb.go",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go",
+        "@build_stack_rules_proto//plugin/grpc/grpc-go:protoc-gen-go-grpc",
+    ],
+    proto = "v1alpha1_proto",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "v1alpha1",
+    srcs = [
+        "package.pb.go",
+        "package_grpc.pb.go",
+    ],
+    importpath = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_cloud_go_longrunning//autogen/longrunningpb:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes:go_default_library",
+        "@org_golang_google_grpc//status:go_default_library",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+        "@org_golang_google_protobuf//types/descriptorpb",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
 )
