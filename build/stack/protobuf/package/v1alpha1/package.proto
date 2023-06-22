@@ -64,6 +64,8 @@ message ProtoAsset {
     string asset_url = 5;
     // URL where the source file is stored.
     string source_url = 6;
+    // list of direct dependencies with hashed form (e.g. 'google/protobuf/any.proto@protoreflecthash.v0:0e24bad962e415eb78b7e030d8037580cefbb3a8798865cdd026b549e7d7787b')
+    repeated string dependencies = 7;
 }
 
 // ProtoCompiler represents the tool used to generate proto descriptors.
