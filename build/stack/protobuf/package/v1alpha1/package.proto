@@ -54,7 +54,7 @@ message ProtoSourceLocation {
 message ProtoAsset {
     // The compiled file.
     google.protobuf.FileDescriptorProto file = 1;
-    // Semantic hash code of the FileDescriptorProto data.
+    // object hash code of the FileDescriptorProto data.
     string hash = 2;
     // sha256 hash of the FileDescriptorProto data.
     string sha256 = 3;
@@ -96,6 +96,9 @@ message ProtoPackage {
     google.protobuf.Timestamp created_at = 7;
     // name is the unique natural name for the package
     string name = 8;
+    // object hash code of the sum of the assets, sorted alphanumerically by
+    // filename.
+    string hash = 9;
 }
 
 // ProtoPackages is a set of packages
