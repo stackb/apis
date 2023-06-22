@@ -98,6 +98,12 @@ message ProtoPackage {
     string name = 8;
 }
 
+// ProtoPackages is a set of packages
+message ProtoPackageSet {
+    // packages is the list of packages in the set
+    repeated ProtoPackage packages = 1;
+}
+
 message CreateProtoPackageRequest {
     // The release info.  For a client streaming call, this only needs to be populated on the first send.
     ProtoSourceLocation root = 1;
