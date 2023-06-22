@@ -96,9 +96,12 @@ message ProtoPackage {
     google.protobuf.Timestamp created_at = 7;
     // name is the unique natural name for the package
     string name = 8;
-    // object hash code of the sum of the assets, sorted alphanumerically by
-    // filename.
+    // object hash code of the assets (sorted alphanumerically by filename).
+    // The equivalent json object that would be hashed is `{"assets": [LIST OF
+    // ASSETS]}`.
     string hash = 9;
+    // list of direct package dependencies with hashed form (e.g. '{name}@protoreflecthash.v0:0e24bad962e415eb78b7e030d8037580cefbb3a8798865cdd026b549e7d7787b')
+    repeated string dependencies = 10;
 }
 
 // ProtoPackages is a set of packages
