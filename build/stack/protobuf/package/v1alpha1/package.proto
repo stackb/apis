@@ -111,21 +111,12 @@ message ProtoPackageSet {
 }
 
 message CreateProtoPackageRequest {
-    // The release info.  For a client streaming call, this only needs to be populated on the first send.
-    ProtoSourceLocation root = 1;
-    // The compiler info.  For a client streaming call, this only needs to be populated on the first send.
-    ProtoCompiler compiler = 2;
-    // prefix is the directory prefix that would be stripped to make paths in
-    // the descriptors relative to (e.g. 'src' for
-    // 'github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto').
-    string prefix = 3;
-    // A list of assets.  The client may decide to chunk a large list into multiple calls based on message size.
-    repeated ProtoAsset assets = 4;
+    ProtoPackage pkg = 1;
 }
 
 message GetProtoPackageRequest {
-    // the package operation ID
-    string id = 1;
+    // the package operation name
+    string operation_name = 1;
 }
 
 // Packages performs operations on packages.
