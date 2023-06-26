@@ -59,7 +59,7 @@ message ProtoAsset {
     // sha256 hash of the FileDescriptorProto data.
     string sha256 = 3;
     // size in bytes of the the FileDescriptorProto data.
-    uint64 size = 4;
+    int64 size = 4;
     // URL where the asset bytes are stored.
     string asset_url = 5;
     // URL where the source file is stored.
