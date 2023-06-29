@@ -38,8 +38,8 @@ message ProtoRepository {
     string full_name = 4;
 }
 
-// ProtoSourceLocation is a repository directory at a given repository state.
-message ProtoSourceLocation {
+// ProtoArchive is a repository directory at a given repository state.
+message ProtoArchive {
     // The source repository
     ProtoRepository repository = 1;
     // root is the directory prefix that would be stripped to make paths in the
@@ -50,12 +50,16 @@ message ProtoSourceLocation {
     string ref_name = 3;
     // ref_type is the optional ref_type (GITHUB_REF_TYPE).
     string ref_type = 4;
-    // commit is the git commit sha (e.g. '4dd15db6eb3955745f379d28fb4a2fcfb6753de3'; GITHUB_SHA).
+    // commit_sha1 is the git commit sha (e.g.
+    // '4dd15db6eb3955745f379d28fb4a2fcfb6753de3'; GITHUB_SHA).
     string commit_sha1 = 5;
+    // short_sha1 is the first 7 characters of the commit_sha1 (e.g. git
+    // rev-parse).
+    string short_sha1 = 6;
     // the time of the commit
-    google.protobuf.Timestamp commit_time = 6;
+    google.protobuf.Timestamp commit_time = 7;
     // the commit message
-    google.protobuf.Timestamp commit_message = 7;
+    google.protobuf.Timestamp commit_message = 8;
 }
 
 // ProtoFile represents a compiled FileDescriptorProto and metadata.
@@ -75,7 +79,7 @@ message ProtoFile {
     // list of direct dependencies with hashed form (e.g. 'google/protobuf/any.proto@protoreflecthash.v0:0e24bad962e415eb78b7e030d8037580cefbb3a8798865cdd026b549e7d7787b')
     repeated string dependencies = 7;
     // the .proto source code (optional).
-    string source = 8;
+    string source_code = 8;
 }
 
 // ProtoCompiler represents the tool used to generate proto descriptors.
@@ -94,21 +98,19 @@ message ProtoCompiler {
 // files under source control.
 message ProtoPackage {
     // root location for the assets
-    ProtoSourceLocation location = 1;
+    ProtoArchive archive = 1;
     // compiler used to create the assets.
     ProtoCompiler compiler = 2;
     // files is the set of files in this package.
     repeated ProtoFile files = 4;
-    // sha256 is the sha256 sum of the asset sha256s.
-    string sha256 = 5;
-    // URL for this package
-    string url = 6;
+    // URL for this package (e.g. protopkg.com/github.com/stackb/apis/{commit}/build/stack/protobuf/package/v1alpha2)
+    string package_url = 6;
     // time when the package was created.
     google.protobuf.Timestamp created_at = 7;
     // the name for the package (e.g. 'google/protobuf').
     string name = 8;
-    // object hash code of the assets (sorted alphanumerically by filename).
-    // The equivalent json object that would be hashed is `{"assets": [LIST OF
+    // object hash code of the files (sorted alphanumerically by filename). The
+    // equivalent json object that would be hashed is `{"assets": [LIST OF
     // ASSETS]}`.
     string hash = 9;
     // list of direct package dependencies with hashed form (e.g.
