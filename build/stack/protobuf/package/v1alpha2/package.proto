@@ -1,0 +1,151 @@
+// Copyright 2020-2023 Stack.Build LLC.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package build.stack.protobuf.package.v1alpha2;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/descriptor.proto";
+import "google/longrunning/operations.proto";
+
+option go_package = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha2";
+
+// ProtoRepository represents a place where source files are located.
+message ProtoRepository {
+    // host is the platform where the repository is housed (e.g. 'github.com';
+    // GITHUB_SERVER_URL).
+    string host = 1;
+    // owner is the github owner name (e.g. 'protocolbuffers';
+    // GITHUB_REPOSITORY_OWNER).
+    string owner = 2;
+    // name is the name of the repository (e.g. 'protobuf';
+    // GITHUB_REPOSITORY_NAME).
+    string name = 3;
+    // full_name is the complete name of the repository (e.g.
+    // github.com/protocolbuffers/protobuf'; GITHUB_REPOSITORY)
+    string full_name = 4;
+}
+
+// ProtoArchive is a repository directory at a given repository state.
+message ProtoArchive {
+    // The source repository
+    ProtoRepository repository = 1;
+    // root is the directory prefix that would be stripped to make paths in the
+    // descriptors relative to (e.g. 'src' for
+    // 'github.com/protocolbuffers/protobuf/src/google/protobuf/any.proto').
+    string root = 2;
+    // ref_name is the optional tag or branch name (GITHUB_REF_TYPE).
+    string ref_name = 3;
+    // ref_type is the optional ref_type (GITHUB_REF_TYPE).
+    string ref_type = 4;
+    // commit_sha1 is the git commit sha (e.g.
+    // '4dd15db6eb3955745f379d28fb4a2fcfb6753de3'; GITHUB_SHA).
+    string commit_sha1 = 5;
+    // short_sha1 is the first 7 characters of the commit_sha1 (e.g. git
+    // rev-parse).
+    string short_sha1 = 6;
+    // the time of the commit
+    google.protobuf.Timestamp commit_time = 7;
+    // the commit message
+    google.protobuf.Timestamp commit_message = 8;
+}
+
+// ProtoFile represents a compiled FileDescriptorProto and metadata.
+message ProtoFile {
+    // The compiled file descriptor.
+    google.protobuf.FileDescriptorProto file = 1;
+    // object hash code of the FileDescriptorProto data.
+    string hash = 2;
+    // sha256 hash of the FileDescriptorProto data.
+    string file_sha256 = 3;
+    // size in bytes of the the FileDescriptorProto data.
+    int64 file_size = 4;
+    // URL where the file descriptor bytes are stored.
+    string file_url = 5;
+    // URL where the source file is stored.
+    string source_url = 6;
+    // list of direct dependencies with hashed form (e.g. 'google/protobuf/any.proto@protoreflecthash.v0:0e24bad962e415eb78b7e030d8037580cefbb3a8798865cdd026b549e7d7787b')
+    repeated string dependencies = 7;
+    // the .proto source code (optional).
+    string source_code = 8;
+}
+
+// ProtoCompiler represents the tool used to generate proto descriptors.
+message ProtoCompiler {
+    // the name of the compiler (e.g. 'protoc').
+    string name = 1;
+    // the version of the compiler, typically the numeric part of `protoc
+    // -version` (e.g '3.14.0').
+    string version = 2;
+    // the URL of the compiler version (e.g.
+    // 'https://github.com/protocolbuffers/protobuf/releases/tag/v23.3').
+    string url = 3;
+}
+
+// ProtoPackage represents a set of compiled proto files for a given state of
+// files under source control.
+message ProtoPackage {
+    // root location for the assets
+    ProtoArchive archive = 1;
+    // compiler used to create the assets.
+    ProtoCompiler compiler = 2;
+    // files is the set of files in this package.
+    repeated ProtoFile files = 4;
+    // URL for this package (e.g. protopkg.com/github.com/stackb/apis/{commit}/build/stack/protobuf/package/v1alpha2)
+    string package_url = 6;
+    // time when the package was created.
+    google.protobuf.Timestamp created_at = 7;
+    // the name for the package (e.g. 'google/protobuf').
+    string name = 8;
+    // object hash code of the files (sorted alphanumerically by filename). The
+    // equivalent json object that would be hashed is `{"assets": [LIST OF
+    // ASSETS]}`.
+    string hash = 9;
+    // list of direct package dependencies with hashed form (e.g.
+    // '{name}@protoreflecthash.v0:0e24bad962e415eb78b7e030d8037580cefbb3a8798865cdd026b549e7d7787b')
+    repeated string dependencies = 10;
+}
+
+// ProtoPackageSet is a set of packages.
+message ProtoPackageSet {
+    // packages is the list of packages in the set
+    repeated ProtoPackage packages = 1;
+}
+
+message CreateProtoPackageRequest {
+    ProtoPackage pkg = 1;
+}
+
+message GetProtoPackageRequest {
+    // the package operation name
+    string operation_name = 1;
+}
+
+// Packages performs operations on packages.
+service Packages {
+    // CreateProtoPackage assembles a stream of packages.  The first request
+    // must include the release & compiler objects, afterwards it does not need
+    // to be sent (and will likely be ignored).  The final list of assets will
+    // be merged in the server.
+    rpc CreateProtoPackage(stream CreateProtoPackageRequest) returns (google.longrunning.Operation) {
+        option idempotency_level = IDEMPOTENT;
+    }
+
+    // GetProtoPackage returns a package identified by the longrunning
+    // operations ID.
+    rpc GetProtoPackage(GetProtoPackageRequest) returns (ProtoPackage) {
+        option idempotency_level = NO_SIDE_EFFECTS;
+    }
+}
