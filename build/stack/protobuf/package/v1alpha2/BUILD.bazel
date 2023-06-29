@@ -1,0 +1,52 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
+
+proto_library(
+    name = "v1alpha2_proto",
+    srcs = ["package.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@googleapis//google/longrunning:operations_proto",
+        "@protoapis//google/protobuf:descriptor_proto",
+        "@protoapis//google/protobuf:timestamp_proto",
+    ],
+)
+
+go_library(
+    name = "v1alpha2",
+    srcs = [
+        "package.pb.go",
+        "package_grpc.pb.go",
+    ],
+    importpath = "github.com/stackb/apis/build/stack/protobuf/package/v1alpha2",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_cloud_go_longrunning//autogen/longrunningpb",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+        "@org_golang_google_protobuf//types/descriptorpb",
+        "@org_golang_google_protobuf//types/known/timestamppb",
+    ],
+)
+
+proto_compiled_sources(
+    name = "v1alpha2_go_compiled_sources",
+    srcs = [
+        "package.pb.go",
+        "package_grpc.pb.go",
+    ],
+    output_mappings = [
+        "package.pb.go=github.com/stackb/apis/build/stack/protobuf/package/v1alpha2/package.pb.go",
+        "package_grpc.pb.go=github.com/stackb/apis/build/stack/protobuf/package/v1alpha2/package_grpc.pb.go",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go",
+        "@build_stack_rules_proto//plugin/grpc/grpc-go:protoc-gen-go-grpc",
+    ],
+    proto = "v1alpha2_proto",
+    visibility = ["//visibility:public"],
+)

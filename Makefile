@@ -20,3 +20,4 @@ update:
 	$(BAZEL) run //build/stack/starlark/info/v1beta1:v1beta1_go_compiled_sources.update
 	$(BAZEL) run //build/stack/protobuf/compiler/v1alpha1:v1alpha1_go_compiled_sources.update
 	$(BAZEL) run //build/stack/protobuf/package/v1alpha1:v1alpha1_go_compiled_sources.update
+	$(BAZEL) run //build/stack/protobuf/package/v1alpha2:v1alpha2_go_compiled_sources.update
