@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package build.stack.syntax_highlight.v1beta1;
+
+option go_package = "github.com/stackb/bezel/proto/syntax_highlight;syntax_highlight";
+
+message SyntaxHighlightRequest {
+  // filename is the name of the file, which may be used by implementations to
+  // guess a language.
+  string filename = 1;
+  // language is the requested language to format.  The recognized list of
+  // languages is is implementation specific.
+  string language = 2;
+  // style is the requested style to format.  The recognized list of
+  // styles is is implementation specific.
+  string style = 3;
+  // input is the unformatted syntax.
+  bytes input = 4;
+}
+
+message SyntaxHighlightResponse {
+  // output is the formatted syntax.
+  bytes output = 1;
+}
+
+service SyntaxHighlighter { 
+  rpc SyntaxHighlight(SyntaxHighlightRequest) returns (SyntaxHighlightResponse); 
+}
