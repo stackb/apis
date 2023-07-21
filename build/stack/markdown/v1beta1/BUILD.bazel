@@ -1,0 +1,26 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
+
+proto_library(
+    name = "v1beta1_proto",
+    srcs = ["document.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_compiled_sources(
+    name = "v1beta1_go_compiled_sources",
+    srcs = [
+        "document.pb.go",
+        "document_grpc.pb.go",
+    ],
+    output_mappings = [
+        "document.pb.go=github.com/stackb/apis/build/stack/markdown/v1beta1/document.pb.go",
+        "document_grpc.pb.go=github.com/stackb/apis/build/stack/markdown/v1beta1/document_grpc.pb.go",
+    ],
+    plugins = [
+        "@build_stack_rules_proto//plugin/golang/protobuf:protoc-gen-go",
+        "@build_stack_rules_proto//plugin/grpc/grpc-go:protoc-gen-go-grpc",
+    ],
+    proto = "v1beta1_proto",
+    visibility = ["//visibility:public"],
+)

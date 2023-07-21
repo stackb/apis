@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package build.stack.markdown.v1beta1;
+
+option go_package = "github.com/stackb/apis/build/stack/markdown/v1beta1";
+
+message Document {
+    // Name of the documentation Document
+    string name = 1;
+    // Label / title of the Document
+    string title = 2;
+    // List of headings in the Document
+    repeated Heading headings = 3;
+    // List of blocks in the Document, if this is a get
+    repeated Block blocks = 4;
+    // Content of the Document, if this is a get
+    string html = 5;
+}
+
+message Block {
+    message Unknown {
+        string text = 1;
+    }
+
+    message Para {
+        string text = 1;
+    }
+
+    oneof content {
+        Unknown unknown = 1;
+        Para para = 2;
+    }
+}
+
+message Heading {
+    // The title of the heading
+    string text = 1;
+    // THe name, suitable as an anchor
+    string name = 2;
+    // The heading level, such as 1..6
+    int32 level = 3;
+}
+
+message RenderDocumentRequest {
+    // The document source
+    bytes source = 1;
+    // Whether to show line numbers
+    bool line_numbers = 2;
+}
+
+service Documents {
+    rpc RenderDocument(RenderDocumentRequest) returns (Document) {}
+}
