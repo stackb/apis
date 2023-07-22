@@ -1,3 +1,4 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@build_stack_rules_proto//rules:proto_compiled_sources.bzl", "proto_compiled_sources")
 
@@ -23,4 +24,21 @@ proto_compiled_sources(
     ],
     proto = "v1beta1_proto",
     visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "v1beta1",
+    srcs = [
+        "document.pb.go",
+        "document_grpc.pb.go",
+    ],
+    importpath = "github.com/stackb/apis/build/stack/markdown/v1beta1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+    ],
 )
