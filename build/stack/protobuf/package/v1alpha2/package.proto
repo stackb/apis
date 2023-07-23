@@ -59,7 +59,9 @@ message ProtoArchive {
     // the time of the commit
     google.protobuf.Timestamp commit_time = 7;
     // the commit message
-    google.protobuf.Timestamp commit_message = 8;
+    string commit_message = 8;
+    // the commit author
+    string commit_author = 9;
 }
 
 // ProtoFile represents a compiled FileDescriptorProto and metadata.
