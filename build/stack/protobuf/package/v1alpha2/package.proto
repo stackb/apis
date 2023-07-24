@@ -151,3 +151,38 @@ service Packages {
         option idempotency_level = NO_SIDE_EFFECTS;
     }
 }
+
+
+// ProtoPlugin represents a protobuf compiler plugin.
+message ProtoPlugin {
+    // Lang classifies a plugin into a discrete set of languages.
+    enum Lang {
+        LANG_UNDEFINED = 0;
+        LANG_JAVA = 1;
+        LANG_GO = 2;
+        LANG_JAVASCRIPT = 3;
+        LANG_TYPESCRIPT = 4;
+        LANG_RUST = 5;
+        LANG_OTHER = 6;
+    }
+    // ContainerImage describes an image
+    message ContainerImage {
+        string registry = 1;
+        string repository = 2;
+        string sha256 = 3;
+        string entrypoint = 4;    
+        repeated string env = 5;
+    }
+    // The archive where the plugin source resides.
+    ProtoArchive archive = 1;
+    // the name for the plugin (e.g. 'protoc-gen-go').
+    string name = 2;
+    // the full name of the plugin (e.g. github.com/stackb/apis/{commit}/plugin/protoc-gen-go)
+    string full_name = 3;
+    // URL for this plugin (e.g. https://protopkg.com/github.com/stackb/apis/{commit}/plugin/protoc-gen-go)
+    string plugin_url = 4;
+    // the primary language of the plugin
+    Lang lang = 5;
+    // the container image for plugin.
+    ContainerImage image = 6;
+}
