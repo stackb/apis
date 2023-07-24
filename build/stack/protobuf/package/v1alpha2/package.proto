@@ -151,3 +151,58 @@ service Packages {
         option idempotency_level = NO_SIDE_EFFECTS;
     }
 }
+
+
+// ProtoPlugin represents a protobuf compiler plugin.
+message ProtoPlugin {
+    // Lang classifies a plugin into a discrete set of languages.
+    enum Lang {
+        LANG_UNDEFINED = 0;        
+        LANG_C = 1;
+        LANG_CLOJURE = 2;
+        LANG_CPP = 3;
+        LANG_CSHARP = 4;
+        LANG_D = 5;
+        LANG_DART = 6;
+        LANG_GO = 7;
+        LANG_HASKELL = 8;
+        LANG_JAVA = 9;
+        LANG_JS = 10;
+        LANG_JULIA = 11;
+        LANG_JVM = 12;
+        LANG_KOTLIN = 13;
+        LANG_LUA = 14;
+        LANG_OBJC = 15;
+        LANG_OTHER = 16;
+        LANG_PERL = 17;
+        LANG_PHP = 18;
+        LANG_PYTHON = 19;
+        LANG_R = 20;
+        LANG_RUBY = 21;
+        LANG_RUST = 22;
+        LANG_SCALA = 23;
+        LANG_STARLARK = 24;
+        LANG_SWIFT = 25;
+        LANG_TS = 26;
+    }
+    // ContainerImage describes an image
+    message ContainerImage {
+        string registry = 1;
+        string repository = 2;
+        string sha256 = 3;
+        string entrypoint = 4;    
+        repeated string env = 5;
+    }
+    // The archive where the plugin source resides.
+    ProtoArchive archive = 1;
+    // the name for the plugin (e.g. 'protoc-gen-go').
+    string name = 2;
+    // the full name of the plugin (e.g. github.com/stackb/apis/{commit}/plugin/protoc-gen-go)
+    string full_name = 3;
+    // URL for this plugin (e.g. https://protopkg.com/github.com/stackb/apis/{commit}/plugin/protoc-gen-go)
+    string plugin_url = 4;
+    // the primary language of the plugin
+    Lang lang = 5;
+    // the container image for plugin.
+    ContainerImage image = 6;
+}
