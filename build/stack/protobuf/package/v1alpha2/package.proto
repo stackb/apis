@@ -157,13 +157,33 @@ service Packages {
 message ProtoPlugin {
     // Lang classifies a plugin into a discrete set of languages.
     enum Lang {
-        LANG_UNDEFINED = 0;
-        LANG_JAVA = 1;
-        LANG_GO = 2;
-        LANG_JAVASCRIPT = 3;
-        LANG_TYPESCRIPT = 4;
-        LANG_RUST = 5;
-        LANG_OTHER = 6;
+        LANG_UNDEFINED = 0;        
+        LANG_C = 1;
+        LANG_CLOJURE = 2;
+        LANG_CPP = 3;
+        LANG_CSHARP = 4;
+        LANG_D = 5;
+        LANG_DART = 6;
+        LANG_GO = 7;
+        LANG_HASKELL = 8;
+        LANG_JAVA = 9;
+        LANG_JS = 10;
+        LANG_JULIA = 11;
+        LANG_JVM = 12;
+        LANG_KOTLIN = 13;
+        LANG_LUA = 14;
+        LANG_OBJC = 15;
+        LANG_OTHER = 16;
+        LANG_PERL = 17;
+        LANG_PHP = 18;
+        LANG_PYTHON = 19;
+        LANG_R = 20;
+        LANG_RUBY = 21;
+        LANG_RUST = 22;
+        LANG_SCALA = 23;
+        LANG_STARLARK = 24;
+        LANG_SWIFT = 25;
+        LANG_TS = 26;
     }
     // ContainerImage describes an image
     message ContainerImage {
